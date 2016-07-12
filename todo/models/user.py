@@ -94,6 +94,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=False
     )
 
+    def to_json(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+
+        }
+
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
 
