@@ -16,11 +16,15 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from todo.views import auth
+from todo.views import auth, todo
 
 api_v1_urls = [
     url(r'^login$', auth.Login.as_view(), name='login'),
     url(r'^logout$', auth.Logout.as_view(), name='logout'),
+    url(r'^todos', todo.TodoList.as_view(), name='todo_list'),
+    url(r'^todo/insert$', todo.InsertTodoItem.as_view(), name='insert_todo'),
+    url(r'^todo/update$', todo.UpdateTodoItem.as_view(), name='update_todo'),
+    url(r'^todo/delete$', todo.DeleteTodoItem.as_view(), name='delete_todo'),
 ]
 
 urlpatterns = [
