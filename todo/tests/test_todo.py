@@ -1,3 +1,5 @@
+import json
+
 from django.core.urlresolvers import reverse
 from todo.tests import MainTestCase
 
@@ -29,9 +31,10 @@ class TodosTestCase(MainTestCase):
 
         response = self.client.post(
             reverse('insert_todo'),
-            {
+            data=json.dumps({
                 'description': 'First todo'
-            }
+            }),
+            content_type='application/json',
         )
 
         self.assertEqual(200, response.status_code)
@@ -39,9 +42,10 @@ class TodosTestCase(MainTestCase):
     def test_non_auth_insert_todo_item(self):
         response = self.client.post(
             reverse('insert_todo'),
-            {
+            data=json.dumps({
                 'description': 'First todo'
-            }
+            }),
+            content_type='application/json',
         )
 
         self.assertEqual(401, response.status_code)
@@ -64,11 +68,12 @@ class TodosTestCase(MainTestCase):
 
         response = self.client.post(
             reverse('update_todo'),
-            {
+            data=json.dumps({
                 'id': self.todo_1.id,
                 'description': 'Update todo',
                 'is_done': True
-            }
+            }),
+            content_type='application/json',
         )
 
         self.assertEqual(200, response.status_code)
@@ -80,10 +85,11 @@ class TodosTestCase(MainTestCase):
 
         response = self.client.post(
             reverse('update_todo'),
-            {
+            data=json.dumps({
                 'description': 'Update todo',
                 'is_done': True
-            }
+            }),
+            content_type='application/json',
         )
 
         self.assertEqual(400, response.status_code)
@@ -95,11 +101,12 @@ class TodosTestCase(MainTestCase):
 
         response = self.client.post(
             reverse('update_todo'),
-            {
+            data=json.dumps({
                 'id': 348765832,
                 'description': 'Update todo',
                 'is_done': True
-            }
+            }),
+            content_type='application/json',
         )
 
         self.assertEqual(400, response.status_code)
@@ -111,9 +118,10 @@ class TodosTestCase(MainTestCase):
 
         response = self.client.post(
             reverse('delete_todo'),
-            {
+            data=json.dumps({
                 'id': self.todo_1.id
-            }
+            }),
+            content_type='application/json',
         )
 
         self.assertEqual(200, response.status_code)
@@ -121,9 +129,10 @@ class TodosTestCase(MainTestCase):
     def test_non_auth_delete_todo_item(self):
         response = self.client.post(
             reverse('delete_todo'),
-            {
+            data=json.dumps({
                 'id': self.todo_1.id
-            }
+            }),
+            content_type='application/json',
         )
 
         self.assertEqual(401, response.status_code)
@@ -146,9 +155,10 @@ class TodosTestCase(MainTestCase):
 
         response = self.client.post(
             reverse('delete_todo'),
-            {
+            data=json.dumps({
                 'id': 245432
-            }
+            }),
+            content_type='application/json',
         )
 
         self.assertEqual(400, response.status_code)

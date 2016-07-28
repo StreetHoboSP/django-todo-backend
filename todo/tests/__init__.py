@@ -1,4 +1,5 @@
 import django.test
+import json
 
 from datetime import datetime
 from django.core.urlresolvers import reverse
@@ -27,10 +28,11 @@ class MainTestCase(django.test.TestCase):
     def login(self, login='test', password='test'):
         response = self.client.post(
             reverse('login'),
-            {
+            data=json.dumps({
                 'login': login,
                 'password': password
-            }
+            }),
+            content_type='application/json',
         )
 
         return response
