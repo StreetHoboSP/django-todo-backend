@@ -1,1 +1,2 @@
 django==1.9.*               # Web framework
+django-cors-headers         # CORS headers to responses
