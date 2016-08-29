@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from todo.views import auth, todo
+from todo.views import auth, swagger, todo
 
 api_v1_urls = [
     url(r'^login$', auth.Login.as_view(), name='login'),
@@ -28,4 +28,5 @@ api_v1_urls = [
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/', include(api_v1_urls)),
+    url(r'^swagger.yaml', swagger.Swagger.as_view()),
 ]

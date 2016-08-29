@@ -1,0 +1,155 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: Todo API
+host: localhost:8000
+basePath: /api/v1
+schemes:
+  - http
+tags:
+  - name: Authorization
+    description: Authorization
+  - name: Todos
+    description: Todos
+paths:
+  /login:
+    post:
+      tags: 
+      - Authorization
+      description: Login
+      operationId: login
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              login:
+                type: string
+              password:
+                type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/EmptyResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /logout:
+    post:
+      tags:
+      - Authorization
+      description: Logout
+      operationId: logout
+      responses:
+        default:
+          description: Success
+          schema:
+            $ref: "#/definitions/EmptyResponse"
+  /todos:
+    get:
+      tags:
+      - Todos
+      description: Todo list
+      operationId: todo_list
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/EmptyResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      tags:
+      - Todos
+      description: Add todo
+      operationId: insert_todo
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              description:
+                type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/EmptyResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /todos/{id}:
+    put:
+      tags:
+      - Todos
+      description: Update todo
+      operationId: update_todo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              description:
+                type: string
+              is_done:
+                type: boolean
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/EmptyResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    delete:
+      tags:
+      - Todos
+      description: Delete todo
+      operationId: delete_todo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/EmptyResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+definitions:
+  EmptyResponse:
+    title: ''
+    type: object
+    required:
+      - data
+    properties:
+      data:
+        type: object
+  ErrorResponse:
+    required:
+      - data
+    properties:
+      data:
+        type: object
