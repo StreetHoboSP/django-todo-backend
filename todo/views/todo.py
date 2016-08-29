@@ -7,7 +7,7 @@ from todo.extensions.decorators.login_required import login_required
 from todo.models.todo import Todo
 
 
-class TodoList(View):
+class Todos(View):
 
     @method_decorator(login_required)
     def get(self, request):
@@ -18,9 +18,6 @@ class TodoList(View):
                 )
             ]
         })
-
-
-class InsertTodoItem(View):
 
     @method_decorator(login_required)
     def post(self, request):
@@ -43,17 +40,10 @@ class InsertTodoItem(View):
         })
 
 
-class UpdateTodoItem(View):
+class TodoItem(View):
 
     @method_decorator(login_required)
-    def post(self, request):
-        id = request.POST.get('id')
-
-        if not id:
-            return HttpResponse(
-                status=400
-            )
-
+    def put(self, request, id):
         try:
             todo = Todo.objects.get(id=id)
         except:
@@ -77,18 +67,8 @@ class UpdateTodoItem(View):
             'data': todo.to_json()
         })
 
-
-class DeleteTodoItem(View):
-
     @method_decorator(login_required)
-    def post(self, request):
-        id = request.POST.get('id')
-
-        if not id:
-            return HttpResponse(
-                status=400
-            )
-
+    def delete(self, request, id):
         try:
             Todo.objects.get(id=id).delete()
         except:

@@ -25,6 +25,8 @@ class MainTestCase(django.test.TestCase):
             created_at=datetime.now()
         )
 
+        self.wrond_id = 987654321
+
     def login(self, login='test', password='test'):
         response = self.client.post(
             reverse('login'),

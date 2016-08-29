@@ -12,14 +12,14 @@ class TodosTestCase(MainTestCase):
         self.assertEqual(200, response.status_code)
 
         response = self.client.get(
-            reverse('todo_list')
+            reverse('todos')
         )
 
         self.assertEqual(200, response.status_code)
 
     def test_non_auth_todo_list(self):
         response = self.client.get(
-            reverse('todo_list')
+            reverse('todos')
         )
 
         self.assertEqual(401, response.status_code)
@@ -30,7 +30,7 @@ class TodosTestCase(MainTestCase):
         self.assertEqual(200, response.status_code)
 
         response = self.client.post(
-            reverse('insert_todo'),
+            reverse('todos'),
             data=json.dumps({
                 'description': 'First todo'
             }),
@@ -41,7 +41,7 @@ class TodosTestCase(MainTestCase):
 
     def test_non_auth_insert_todo_item(self):
         response = self.client.post(
-            reverse('insert_todo'),
+            reverse('todos'),
             data=json.dumps({
                 'description': 'First todo'
             }),
@@ -56,7 +56,7 @@ class TodosTestCase(MainTestCase):
         self.assertEqual(200, response.status_code)
 
         response = self.client.post(
-            reverse('insert_todo')
+            reverse('todos')
         )
 
         self.assertEqual(400, response.status_code)
@@ -66,25 +66,8 @@ class TodosTestCase(MainTestCase):
 
         self.assertEqual(200, response.status_code)
 
-        response = self.client.post(
-            reverse('update_todo'),
-            data=json.dumps({
-                'id': self.todo_1.id,
-                'description': 'Update todo',
-                'is_done': True
-            }),
-            content_type='application/json',
-        )
-
-        self.assertEqual(200, response.status_code)
-
-    def test_empty_id_update_todo_item(self):
-        response = self.login()
-
-        self.assertEqual(200, response.status_code)
-
-        response = self.client.post(
-            reverse('update_todo'),
+        response = self.client.put(
+            reverse('todo_item', kwargs=dict(id=self.todo_1.id)),
             data=json.dumps({
                 'description': 'Update todo',
                 'is_done': True
@@ -92,17 +75,16 @@ class TodosTestCase(MainTestCase):
             content_type='application/json',
         )
 
-        self.assertEqual(400, response.status_code)
+        self.assertEqual(200, response.status_code)
 
     def test_wrong_id_update_todo_item(self):
         response = self.login()
 
         self.assertEqual(200, response.status_code)
 
-        response = self.client.post(
-            reverse('update_todo'),
+        response = self.client.put(
+            reverse('todo_item', kwargs=dict(id=self.wrond_id)),
             data=json.dumps({
-                'id': 348765832,
                 'description': 'Update todo',
                 'is_done': True
             }),
@@ -116,49 +98,26 @@ class TodosTestCase(MainTestCase):
 
         self.assertEqual(200, response.status_code)
 
-        response = self.client.post(
-            reverse('delete_todo'),
-            data=json.dumps({
-                'id': self.todo_1.id
-            }),
-            content_type='application/json',
+        response = self.client.delete(
+            reverse('todo_item', kwargs=dict(id=self.todo_1.id)),
         )
 
         self.assertEqual(200, response.status_code)
 
     def test_non_auth_delete_todo_item(self):
-        response = self.client.post(
-            reverse('delete_todo'),
-            data=json.dumps({
-                'id': self.todo_1.id
-            }),
-            content_type='application/json',
+        response = self.client.delete(
+            reverse('todo_item', kwargs=dict(id=self.todo_1.id)),
         )
 
         self.assertEqual(401, response.status_code)
-
-    def test_empty_id_delete_todo_item(self):
-        response = self.login()
-
-        self.assertEqual(200, response.status_code)
-
-        response = self.client.post(
-            reverse('delete_todo'),
-        )
-
-        self.assertEqual(400, response.status_code)
 
     def test_wrong_id_delete_todo_item(self):
         response = self.login()
 
         self.assertEqual(200, response.status_code)
 
-        response = self.client.post(
-            reverse('delete_todo'),
-            data=json.dumps({
-                'id': 245432
-            }),
-            content_type='application/json',
+        response = self.client.delete(
+            reverse('todo_item', kwargs=dict(id=self.wrond_id)),
         )
 
         self.assertEqual(400, response.status_code)
